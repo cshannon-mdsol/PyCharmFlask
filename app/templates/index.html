@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block content %}
-<table class="table">
-    <thead>
+<table class="table table-striped">
+    <thead class="thead-dark">
     <tr>
         <th scope="col">City Name</th>
         <th scope="col">Latitude</th>
@@ -23,7 +23,7 @@
         <td>{{ city.fldCapitalStatus }}</td>
         <td>{{ city.fldPopulation }}</td>
     </tr>
-    {% endfor %}}
+    {% endfor %}
     </tbody>
 </table>
 {% endblock %}
