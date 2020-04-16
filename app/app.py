@@ -2,6 +2,7 @@ from typing import List, Dict
 from mysql import connector
 import simplejson as json
 from flask import Flask, Response
+from flask import render_template
 
 app = Flask(__name__)
 
@@ -17,7 +18,7 @@ def cities_import() -> List[Dict]:
     connection = connector.connect(**config)
     cursor = connection.cursor(dictionary=True)
 
-    cursor.execute('SELECT * FROM tblCitiesImport')
+    cursor.execute('SELECT * FROM tblCitiesImport ORDER BY fldCountry, fldName')
     result = cursor.fetchall()
 
     cursor.close()
@@ -27,7 +28,15 @@ def cities_import() -> List[Dict]:
 
 
 @app.route('/')
-def index() -> str:
+def index():
+    user = {'username': 'Chris'}
+    cities_data = cities_import()
+
+    return render_template('index.html', title='Home', user=user, cities=cities_data)
+
+
+@app.route('/api/cities')
+def cities() -> str:
     js = json.dumps(cities_import())
     resp = Response(js, status=200, mimetype='application/json')
     return resp
